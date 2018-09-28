@@ -16,10 +16,7 @@
 #define BUFLEN 512
 #define PORT 8888
 
-void die(char *s){
-	peroor(s);
-	exit(1);
-}
+
 
 int main(void ){
 
@@ -29,7 +26,7 @@ int main(void ){
 	char message[BUFLEN];
 
 	if ( (s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1){
-		die("socket");
+		fprintf(stderr, "socket failed \n");
 	}
 	memset((char *) &si_other, 0, sizeof(si_other));
 	si_other.sin_family = AF_INET;
@@ -45,14 +42,14 @@ int main(void ){
 		gets(message);
 
 		if (sendto(s, message, strlen(message) , 0 , (struct sockaddr *) &si_other, slen)==-1){
-			die("sendto()");
+			fprintf(stderr, "send failed \n");
 		}
-		memset(buf, '\0', BUFLEN);
-
-		if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == -1){
-			die("recvfrom()");
-		}
-		puts(buf);
+//		memset(buf, '\0', BUFLEN);
+//
+//		if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == -1){
+//			fprintf(stderr, "recv failed \n");
+//		}
+//		puts(buf);
 	}
 
 	close(s);
